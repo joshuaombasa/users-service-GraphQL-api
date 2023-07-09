@@ -25,8 +25,9 @@ type Query {
 }
 
 type Mutation {
-  createUser(name: String!, email: String!): User
-}
+    createUser(name: String!, email: String!): User
+    deleteUser(id: ID!): String
+  }
 `);
 
 
@@ -58,10 +59,25 @@ const root = {
         });
       });
     },
+    deleteUser: ({ id }) => {
+        return new Promise((resolve, reject) => {
+          connection.query('DELETE FROM users WHERE id = ?', [id], (error, results) => {
+            if (error) {
+              reject(error);
+            } else {
+              if (results.affectedRows > 0) {
+                resolve(`User with ID ${id} deleted successfully`);
+              } else {
+                reject(new Error(`User with ID ${id} not found`));
+              }
+            }
+          });
+        });
+      }
   };
 
 
-  // Create an Express app
+ // Create an Express app
 const app = express();
 
 // Define a GraphQL endpoint
