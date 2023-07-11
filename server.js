@@ -94,14 +94,14 @@ const root = {
 
 const app = express();
 
-// app.use(
-//   '/graphql',
-//   graphqlHTTP({
-//     schema: schema,
-//     rootValue: root,
-//     graphiql: true,
-//   })
-// );
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema: schema,
+    rootValue: root,
+    graphiql: true,
+  })
+);
 
 const server = createServer(app);
 server.listen(3000, () => {
